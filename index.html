@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FocusSpace 3.0 — Social & Retro Flow</title>
+  <title>FocusSpace — Retro & Productivity Flow</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body data-scene="cosmos" data-zen="false">
-  <!-- Live Animated Background Canvas & Confetti -->
+  <!-- Live Animated Background Canvas -->
   <canvas id="bg-canvas"></canvas>
-  <canvas id="confetti-canvas"></canvas>
 
   <main class="dashboard">
     <!-- Top Navigation & Profile Bar -->
@@ -26,20 +25,16 @@
       </div>
 
       <div class="header-controls">
-        <!-- Zen Rain Immersion Toggle -->
         <button id="zen-mode-btn" class="control-pill-btn" title="Hide everything except timer & rain">🌧️ Zen Rain Mode</button>
-        
-        <!-- Friends Drawer Toggle -->
         <button id="toggle-friends-btn" class="control-pill-btn">👥 Friends <span id="online-friends-badge">2</span></button>
 
-        <!-- Scene Switcher -->
         <div class="scene-picker" title="Switch Live Atmosphere">
           <button class="scene-btn active" data-scene="cosmos">✨ Cosmos</button>
           <button class="scene-btn" data-scene="rain">🌧️ Rain</button>
           <button class="scene-btn" data-scene="aurora">🌌 Aurora</button>
         </div>
 
-        <div class="streak-pill">🔥 <span id="streak-count">0</span>d</div>
+        <div class="streak-pill">🔥 <span id="streak-count">1</span>d</div>
       </div>
     </header>
 
@@ -56,7 +51,7 @@
 
     <!-- Main Bento Grid -->
     <div class="bento-grid">
-      <!-- Column 1: Timer & Mini Games -->
+      <!-- Column 1: Timer & Mini-Game -->
       <div class="col-stack">
         <section class="card timer-card">
           <div class="mode-tabs">
@@ -82,14 +77,14 @@
           </div>
         </section>
 
-        <!-- Focus Break Mini-Game Card -->
+        <!-- Break Mini-Game Card -->
         <section class="card game-card zen-hide">
           <div class="card-top">
             <h2>🎮 Break Mini-Game</h2>
             <span class="pill-badge">Retro Clicker</span>
           </div>
           <p class="card-sub">Quick reflex challenge to clear your mind during breaks.</p>
-          <div class="game-container" id="game-container">
+          <div class="game-container">
             <div class="game-score">Score: <span id="game-score">0</span></div>
             <button id="game-start-btn" class="secondary-btn">Play Catch Star</button>
           </div>
@@ -123,31 +118,31 @@
         </section>
       </div>
 
-      <!-- Column 3: Indian 90s Songs Player & Soundscapes -->
+      <!-- Column 3: Retro Salon & Ambient Radio Jukebox (Zero Storage) -->
       <div class="col-stack zen-hide">
         <section class="card mixer-card">
           <div class="card-top">
-            <h2>📻 90s Retro Audio Stream</h2>
-            <span class="pill-badge">Nostalgia</span>
+            <h2>📻 Retro Salon Radio</h2>
+            <span class="pill-badge">Cloud Stream</span>
           </div>
-          <p class="card-sub">Play soothing 90s instrumentals & ambient streams.</p>
+          <p class="card-sub">Streaming curated retro sounds like Deluxe Saloon.</p>
 
-          <div class="retro-songs-box">
-            <div class="song-info">
-              <span class="now-playing-label">Now Playing:</span>
-              <span id="song-title">Select a Station Below</span>
-            </div>
-            
-            <!-- Native HTML5 Audio Player -->
-            <audio id="retro-audio" controls style="width: 100%; margin-top: 8px; accent-color: var(--accent);">
-              Your browser does not support the audio element.
-            </audio>
+          <div class="retro-songs-box" style="padding: 10px; text-align: center;">
+            <!-- Official YouTube-Nocookie Embedded Stream with required security attribute to prevent Error 153 -->
+            <iframe 
+              id="yt-player"
+              style="border-radius: 12px; width: 100%; height: 180px; border: none;"
+              src="https://www.youtube-nocookie.com/embed/RWqmC7oBPKA?autoplay=1&enablejsapi=1" 
+              title="Retro Saloon Radio"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowfullscreen>
+            </iframe>
 
-            <div class="song-btns" style="margin-top: 10px;">
-              <button class="song-btn" onclick="playStation('https://ia801509.us.archive.org/28/items/90sHinglishRomanticSongs/90sFluteInstrumental.mp3', '90s Romantic Flute')">🎶 90s Flute Vibe</button>
-              <button class="song-btn" onclick="playStation('https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg', 'Retro Cafe Ambience')">☕ Cafe Ambience</button>
+            <div class="song-btns" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
+              <button class="song-btn vibe-btn active" onclick="switchRadio('RWqmC7oBPKA', this)">☕ Saloon Retro</button>
+              <button class="song-btn vibe-btn" onclick="switchRadio('jfKfPfyJRdk', this)">🌙 Lo-Fi Chill</button>
             </div>
-            <button id="stop-song-btn" class="secondary-btn" style="margin-top: 8px; width: 100%;">Stop Music</button>
           </div>
         </section>
       </div>
@@ -159,7 +154,7 @@
     <div class="friends-modal-content">
       <div class="card-top">
         <h2>👥 Friends & Direct Messages</h2>
-        <button id="close-friends-btn" class="secondary-btn" style="padding: 4px 10px; flex: unset;">✕</button>
+        <button id="close-friends-btn" class="secondary-btn close-modal-btn">✕</button>
       </div>
       <p class="card-sub">Chat with study buddies online.</p>
       

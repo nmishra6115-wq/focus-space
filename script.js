@@ -1,4 +1,4 @@
-// 1. Curated Daily Quotes
+// 1. Daily Quotes
 const QUOTES = [
   "Focus on being productive instead of busy.",
   "Small daily improvements lead to massive results.",
@@ -6,8 +6,6 @@ const QUOTES = [
   "Your future is created by what you do today."
 ];
 document.getElementById('daily-quote').textContent = `"${QUOTES[Math.floor(Math.random() * QUOTES.length)]}"`;
-
-const todayKey = new Date().toLocaleDateString('en-CA');
 
 // 2. Zen Rain Mode Toggle
 const zenBtn = document.getElementById('zen-mode-btn');
@@ -17,6 +15,7 @@ zenBtn.addEventListener('click', () => {
   document.body.setAttribute('data-zen', isZen ? 'true' : 'false');
   zenBtn.textContent = isZen ? '✨ Exit Zen Mode' : '🌧️ Zen Rain Mode';
   if (isZen) {
+    currentScene = 'rain';
     document.body.setAttribute('data-scene', 'rain');
     initSceneParticles();
   }
@@ -26,6 +25,7 @@ zenBtn.addEventListener('click', () => {
 const bgCanvas = document.getElementById('bg-canvas');
 const bgCtx = bgCanvas.getContext('2d');
 let currentScene = localStorage.getItem('focusSpace_scene') || 'cosmos';
+document.body.setAttribute('data-scene', currentScene);
 let particles = [];
 
 function resizeBgCanvas() {
@@ -55,7 +55,10 @@ function renderBackground() {
     bgCtx.lineWidth = 1.2;
     particles.forEach(p => {
       p.y += p.speedY;
-      if (p.y > bgCanvas.height) { p.y = -20; p.x = Math.random() * bgCanvas.width; }
+      if (p.y > bgCanvas.height) {
+        p.y = -20;
+        p.x = Math.random() * bgCanvas.width;
+      }
       bgCtx.beginPath();
       bgCtx.moveTo(p.x, p.y);
       bgCtx.lineTo(p.x - 1, p.y + p.len);
@@ -75,6 +78,7 @@ function renderBackground() {
 }
 
 document.querySelectorAll('.scene-btn').forEach(btn => {
+  btn.classList.toggle('active', btn.dataset.scene === currentScene);
   btn.addEventListener('click', () => {
     currentScene = btn.dataset.scene;
     document.body.setAttribute('data-scene', currentScene);
@@ -101,9 +105,21 @@ let timerInterval = null;
 let isRunning = false;
 
 let profile = JSON.parse(localStorage.getItem('focusSpace_profile')) || { xp: 0, streak: 1 };
+
+function addXP(amount) {
+  profile.xp += amount;
+  localStorage.setItem('focusSpace_profile', JSON.stringify(profile));
+  updateProfileUI();
+}
+
 function updateProfileUI() {
+  const level = Math.floor(profile.xp / 300) + 1;
+  const nextXP = level * 300;
+  const currentLevelXP = profile.xp % 300;
+  document.getElementById('rank-title').textContent = `Lvl ${level} • Focus Flow`;
   document.getElementById('xp-current').textContent = profile.xp;
-  document.getElementById('xp-fill').style.width = `${Math.min(100, (profile.xp / 500) * 100)}%`;
+  document.getElementById('xp-next').textContent = nextXP;
+  document.getElementById('xp-fill').style.width = `${(currentLevelXP / 300) * 100}%`;
   document.getElementById('streak-count').textContent = profile.streak;
 }
 updateProfileUI();
@@ -120,6 +136,7 @@ startBtn.addEventListener('click', () => {
     clearInterval(timerInterval);
     isRunning = false;
     startBtn.textContent = 'Resume';
+    statusEl.textContent = 'Paused';
   } else {
     isRunning = true;
     startBtn.textContent = 'Pause';
@@ -133,9 +150,7 @@ startBtn.addEventListener('click', () => {
         isRunning = false;
         startBtn.textContent = 'Start Focus';
         statusEl.textContent = 'Session complete! +100 XP';
-        profile.xp += 100;
-        localStorage.setItem('focusSpace_profile', JSON.stringify(profile));
-        updateProfileUI();
+        addXP(100);
       }
     }, 1000);
   }
@@ -146,6 +161,7 @@ resetBtn.addEventListener('click', () => {
   isRunning = false;
   timeLeft = defaultTime;
   startBtn.textContent = 'Start Focus';
+  statusEl.textContent = 'Ready for deep work';
   updateTimerUI();
 });
 
@@ -155,14 +171,51 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
     btn.classList.add('active');
     clearInterval(timerInterval);
     isRunning = false;
-    defaultTime = parseInt(btn.dataset.time) * 60;
+    defaultTime = parseInt(btn.dataset.time, 10) * 60;
     timeLeft = defaultTime;
     startBtn.textContent = 'Start Focus';
+    statusEl.textContent = 'Ready for deep work';
     updateTimerUI();
   });
 });
 
-// 5. Priorities & Personal Notepad
+// 5. Daily Top 3 Priorities & Personal Notepad
+const todayKey = new Date().toLocaleDateString('en-CA');
+const savedTasks = JSON.parse(localStorage.getItem(`focusSpace_tasks_${todayKey}`)) || [
+  { text: '', done: false },
+  { text: '', done: false },
+  { text: '', done: false }
+];
+
+function saveTasks() {
+  localStorage.setItem(`focusSpace_tasks_${todayKey}`, JSON.stringify(savedTasks));
+  const doneCount = savedTasks.filter(t => t.done).length;
+  document.getElementById('priority-badge').textContent = `${doneCount} / 3`;
+}
+
+savedTasks.forEach((task, idx) => {
+  const checkbox = document.getElementById(`check-${idx}`);
+  const textInput = document.getElementById(`text-${idx}`);
+  const li = checkbox.closest('.task-item');
+
+  checkbox.checked = task.done;
+  textInput.value = task.text;
+  if (task.done) li.classList.add('done');
+
+  checkbox.addEventListener('change', () => {
+    savedTasks[idx].done = checkbox.checked;
+    li.classList.toggle('done', checkbox.checked);
+    if (checkbox.checked) addXP(25);
+    saveTasks();
+  });
+
+  textInput.addEventListener('input', () => {
+    savedTasks[idx].text = textInput.value;
+    saveTasks();
+  });
+});
+saveTasks();
+
 const notepad = document.getElementById('personal-notes');
 notepad.value = localStorage.getItem('focusSpace_notepad') || '';
 notepad.addEventListener('input', () => {
@@ -171,54 +224,39 @@ notepad.addEventListener('input', () => {
   setTimeout(() => { document.getElementById('notes-status').textContent = 'Auto-saved'; }, 600);
 });
 
-// 6. Bulletproof Audio Station Switcher (Archive.org CDN)
-function playStation(url, title) {
-  const audio = document.getElementById('retro-audio');
-  
-  audio.pause();
-  audio.currentTime = 0;
-  audio.src = url;
-  audio.load();
+// 6. Radio Stream Switcher (Zero Storage, Fixed via nocookie & referrerpolicy)
+function switchRadio(videoId, btnEl) {
+  const iframe = document.getElementById('yt-player');
+  iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
 
-  const playPromise = audio.play();
-  if (playPromise !== undefined) {
-    playPromise.then(() => {
-      document.getElementById('song-title').textContent = title;
-    }).catch(error => {
-      console.log("Audio waiting for user play action:", error);
-      document.getElementById('song-title').textContent = title + " (Click play on bar)";
-    });
+  if (btnEl) {
+    document.querySelectorAll('.vibe-btn').forEach(b => b.classList.remove('active'));
+    btnEl.classList.add('active');
   }
 }
 
-const stopSongBtn = document.getElementById('stop-song-btn');
-if (stopSongBtn) {
-  stopSongBtn.addEventListener('click', () => {
-    const audio = document.getElementById('retro-audio');
-    audio.pause();
-    audio.currentTime = 0;
-    document.getElementById('song-title').textContent = 'Music Stopped';
-  });
-}
-
-// 7. Friends & Chat Modal Logic
+// 7. Friends & Chat Modal
 const modal = document.getElementById('friends-modal');
 document.getElementById('toggle-friends-btn').addEventListener('click', () => modal.classList.add('open'));
-document.getElementById('close-friends-btn').addEventListener('click', () => modal.classList.remove('open'));
-
 const chatMsgs = document.getElementById('chat-messages');
-document.getElementById('send-chat-btn').addEventListener('click', () => {
-  const input = document.getElementById('chat-input');
-  if (!input.value.trim()) return;
+const chatInput = document.getElementById('chat-input');
+
+function sendChatMessage() {
+  if (!chatInput.value.trim()) return;
   const div = document.createElement('div');
   div.className = 'chat-msg';
-  div.innerHTML = `<strong>You:</strong> ${input.value}`;
+  div.innerHTML = `<strong>You:</strong> ${chatInput.value}`;
   chatMsgs.appendChild(div);
-  input.value = '';
+  chatInput.value = '';
   chatMsgs.scrollTop = chatMsgs.scrollHeight;
+}
+
+document.getElementById('send-chat-btn').addEventListener('click', sendChatMessage);
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') sendChatMessage();
 });
 
-// 8. Mini Game (Catch Star Clicker)
+// 8. Mini-Game (Catch Star Clicker)
 let gameScore = 0;
 const gameBtn = document.getElementById('game-start-btn');
 gameBtn.addEventListener('click', () => {
