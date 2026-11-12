@@ -7,7 +7,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
+<body data-theme="midnight">
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
   <!-- Ambient glowing background orbs -->
   <div class="ambient-orb orb-1"></div>
   <div class="ambient-orb orb-2"></div>
@@ -19,10 +22,20 @@
         <span class="logo-icon">⚡</span>
         <h1>FocusSpace</h1>
       </div>
+
       <div class="header-right">
-        <div class="streak-badge" id="streak-badge" title="Complete a focus session today to keep your streak alive!">
+        <!-- Theme Switcher -->
+        <div class="theme-switcher" title="Switch Atmosphere">
+          <button class="theme-dot active" data-theme="midnight" style="background: #6366f1;" title="Midnight Indigo"></button>
+          <button class="theme-dot" data-theme="forest" style="background: #10b981;" title="Deep Forest"></button>
+          <button class="theme-dot" data-theme="sunset" style="background: #f43f5e;" title="Warm Sunset"></button>
+          <button class="theme-dot" data-theme="cyber" style="background: #06b6d4;" title="Cyber Cyan"></button>
+        </div>
+
+        <div class="streak-badge" title="Complete at least 1 focus session daily to keep your streak!">
           🔥 <span id="streak-count">0</span> Day Streak
         </div>
+
         <p id="date-display"></p>
       </div>
     </header>
@@ -31,13 +44,12 @@
       <!-- Left Column: Circular Timer Card -->
       <section class="card timer-card">
         <div class="mode-buttons">
-          <button class="mode-btn active" data-mode="focus" data-time="25">Focus</button>
+          <button class="mode-btn active" data-mode="focus" data-time="25">Focus (25m)</button>
           <button class="mode-btn" data-mode="short" data-time="5">Short Break</button>
           <button class="mode-btn" data-mode="long" data-time="15">Long Break</button>
         </div>
 
         <div class="timer-container">
-          <!-- SVG Circular Progress Ring -->
           <svg class="progress-ring" width="260" height="260">
             <circle class="progress-ring-bg" cx="130" cy="130" r="115" />
             <circle class="progress-ring-fill" id="progress-bar" cx="130" cy="130" r="115" />
@@ -46,6 +58,10 @@
             <div class="timer-display" id="timer">25:00</div>
             <span class="timer-status" id="timer-status">Ready to focus</span>
           </div>
+        </div>
+
+        <div class="session-counter">
+          Completed today: <strong id="sessions-today">0</strong> sessions
         </div>
 
         <div class="timer-controls">
@@ -60,9 +76,9 @@
         <section class="card">
           <div class="card-header">
             <h2>Today's Top 3 Priorities</h2>
-            <span class="badge">Auto-resets daily</span>
+            <span class="badge" id="priority-badge">0 / 3 Done</span>
           </div>
-          <p class="subtitle">Win the day by locking in your top 3 targets.</p>
+          <p class="subtitle">Complete all 3 targets to celebrate your daily win.</p>
           
           <ul class="task-list">
             <li class="task-item">
@@ -83,11 +99,13 @@
         <!-- Ambient Soundscapes Card -->
         <section class="card">
           <h2>Ambient Soundscapes</h2>
-          <p class="subtitle">Built-in audio generator for deep immersion</p>
+          <p class="subtitle">Procedural browser audio — zero lag, works offline</p>
           
           <div class="sound-controls">
-            <button class="sound-btn" id="rain-btn">🌧️ Soft Rain</button>
-            <button class="sound-btn" id="brown-btn">🌊 Deep Brown Noise</button>
+            <button class="sound-btn" data-sound="rain">🌧️ Soft Rain</button>
+            <button class="sound-btn" data-sound="brown">🌊 Deep Brown</button>
+            <button class="sound-btn" data-sound="cafe">☕ Warm Hum</button>
+            <button class="sound-btn" data-sound="wind">🍃 Night Breeze</button>
           </div>
           <div class="volume-row">
             <span>Volume</span>
