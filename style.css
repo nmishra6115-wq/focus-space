@@ -175,3 +175,18 @@ textarea#personal-notes:focus { border-color: var(--accent); }
 .chat-input-row input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; color: var(--text-main); font-size: 0.82rem; outline: none; }
 
 @media (max-width: 980px) { .bento-grid { grid-template-columns: 1fr; } }
+
+
+.player-embed-wrap {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 8px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.player-embed-wrap iframe {
+  display: block;
+  border-radius: 10px;
+  opacity: 0.85;
+}

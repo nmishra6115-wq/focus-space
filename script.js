@@ -171,41 +171,35 @@ notepad.addEventListener('input', () => {
   setTimeout(() => { document.getElementById('notes-status').textContent = 'Auto-saved'; }, 600);
 });
 
-// 6. Indian 90s Songs & Ambient Mixer (Web Audio Synth)
-let audioCtx = null;
-let currentSongOsc = null;
-
-function play90sMelody(type) {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (currentSongOsc) { currentSongOsc.stop(); currentSongOsc = null; }
-
-  const notes = type === '90s-flute' ? [330, 392, 440, 523, 440, 392] : [220, 261, 293, 329, 293];
-  document.getElementById('song-title').textContent = type === '90s-flute' ? '🎶 90s Romantic Flute' : '🎸 Retro Lo-Fi Chill';
+// 6. Bulletproof Audio Station Switcher (Archive.org CDN)
+function playStation(url, title) {
+  const audio = document.getElementById('retro-audio');
   
-  let index = 0;
-  currentSongOsc = setInterval(() => {
-    if (!audioCtx) return;
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(notes[index % notes.length], audioCtx.currentTime);
-    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start();
-    osc.stop(audioCtx.currentTime + 1.2);
-    index++;
-  }, 1400);
+  audio.pause();
+  audio.currentTime = 0;
+  audio.src = url;
+  audio.load();
+
+  const playPromise = audio.play();
+  if (playPromise !== undefined) {
+    playPromise.then(() => {
+      document.getElementById('song-title').textContent = title;
+    }).catch(error => {
+      console.log("Audio waiting for user play action:", error);
+      document.getElementById('song-title').textContent = title + " (Click play on bar)";
+    });
+  }
 }
 
-document.querySelectorAll('.song-btn').forEach(btn => {
-  btn.addEventListener('click', () => play90sMelody(btn.dataset.song));
-});
-document.getElementById('stop-song-btn').addEventListener('click', () => {
-  if (currentSongOsc) { clearInterval(currentSongOsc); currentSongOsc = null; }
-  document.getElementById('song-title').textContent = 'Music Stopped';
-});
+const stopSongBtn = document.getElementById('stop-song-btn');
+if (stopSongBtn) {
+  stopSongBtn.addEventListener('click', () => {
+    const audio = document.getElementById('retro-audio');
+    audio.pause();
+    audio.currentTime = 0;
+    document.getElementById('song-title').textContent = 'Music Stopped';
+  });
+}
 
 // 7. Friends & Chat Modal Logic
 const modal = document.getElementById('friends-modal');

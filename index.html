@@ -127,38 +127,27 @@
       <div class="col-stack zen-hide">
         <section class="card mixer-card">
           <div class="card-top">
-            <h2>📻 Indian 90s Retro & Ambient</h2>
+            <h2>📻 90s Retro Audio Stream</h2>
             <span class="pill-badge">Nostalgia</span>
           </div>
-          <p class="card-sub">Play soothing 90s instrumental vibes & ambient sound mixers.</p>
+          <p class="card-sub">Play soothing 90s instrumentals & ambient streams.</p>
 
           <div class="retro-songs-box">
             <div class="song-info">
               <span class="now-playing-label">Now Playing:</span>
-              <span id="song-title">Select a 90s Melody</span>
+              <span id="song-title">Select a Station Below</span>
             </div>
-            <div class="song-btns">
-              <button class="song-btn" data-song="90s-flute">🎶 90s Romantic Flute</button>
-              <button class="song-btn" data-song="lofi-90s">🎸 Retro Lo-Fi Chill</button>
-              <button id="stop-song-btn" class="secondary-btn">Stop Music</button>
-            </div>
-          </div>
+            
+            <!-- Native HTML5 Audio Player -->
+            <audio id="retro-audio" controls style="width: 100%; margin-top: 8px; accent-color: var(--accent);">
+              Your browser does not support the audio element.
+            </audio>
 
-          <div class="mixer-list" style="margin-top: 14px;">
-            <div class="sound-channel" data-sound="rain">
-              <div class="channel-head">
-                <button class="channel-toggle" data-sound="rain">🌧️ Soft Rain</button>
-                <span class="vol-pct">0%</span>
-              </div>
-              <input type="range" class="channel-slider" data-sound="rain" min="0" max="1" step="0.05" value="0" />
+            <div class="song-btns" style="margin-top: 10px;">
+              <button class="song-btn" onclick="playStation('https://ia801509.us.archive.org/28/items/90sHinglishRomanticSongs/90sFluteInstrumental.mp3', '90s Romantic Flute')">🎶 90s Flute Vibe</button>
+              <button class="song-btn" onclick="playStation('https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg', 'Retro Cafe Ambience')">☕ Cafe Ambience</button>
             </div>
-            <div class="sound-channel" data-sound="brown">
-              <div class="channel-head">
-                <button class="channel-toggle" data-sound="brown">🌊 Deep Brown Noise</button>
-                <span class="vol-pct">0%</span>
-              </div>
-              <input type="range" class="channel-slider" data-sound="brown" min="0" max="1" step="0.05" value="0" />
-            </div>
+            <button id="stop-song-btn" class="secondary-btn" style="margin-top: 8px; width: 100%;">Stop Music</button>
           </div>
         </section>
       </div>
@@ -181,9 +170,6 @@
           </div>
           <div class="friend-item" data-friend="Priya">
             <span class="status-dot online"></span> Priya (Taking Break)
-          </div>
-          <div class="friend-item" data-friend="Kabir">
-            <span class="status-dot offline"></span> Kabir (Offline)
           </div>
         </div>
 
