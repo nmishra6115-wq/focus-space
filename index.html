@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FocusSpace 2.0 — Daily Flow Workspace</title>
+  <title>FocusSpace 3.0 — Social & Retro Flow</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
-<body data-scene="cosmos">
+<body data-scene="cosmos" data-zen="false">
   <!-- Live Animated Background Canvas & Confetti -->
   <canvas id="bg-canvas"></canvas>
   <canvas id="confetti-canvas"></canvas>
 
   <main class="dashboard">
-    <!-- Top Navigation & Gamified Profile Bar -->
+    <!-- Top Navigation & Profile Bar -->
     <header class="header">
       <div class="brand-group">
         <div class="logo">
@@ -26,23 +26,25 @@
       </div>
 
       <div class="header-controls">
-        <!-- Animated Scene Switcher -->
+        <!-- Zen Rain Immersion Toggle -->
+        <button id="zen-mode-btn" class="control-pill-btn" title="Hide everything except timer & rain">🌧️ Zen Rain Mode</button>
+        
+        <!-- Friends Drawer Toggle -->
+        <button id="toggle-friends-btn" class="control-pill-btn">👥 Friends <span id="online-friends-badge">2</span></button>
+
+        <!-- Scene Switcher -->
         <div class="scene-picker" title="Switch Live Atmosphere">
           <button class="scene-btn active" data-scene="cosmos">✨ Cosmos</button>
           <button class="scene-btn" data-scene="rain">🌧️ Rain</button>
           <button class="scene-btn" data-scene="aurora">🌌 Aurora</button>
-          <button class="scene-btn" data-scene="zen">🧘 Zen</button>
         </div>
 
-        <!-- Streak Pill -->
-        <div class="streak-pill" title="Complete 1 focus session daily to keep your streak!">
-          🔥 <span id="streak-count">0</span>d Streak
-        </div>
+        <div class="streak-pill">🔥 <span id="streak-count">0</span>d</div>
       </div>
     </header>
 
-    <!-- RPG XP & Level Progress Bar -->
-    <section class="xp-bar-card">
+    <!-- RPG XP Progress Bar -->
+    <section class="xp-bar-card zen-hide">
       <div class="xp-info">
         <span class="rank-badge" id="rank-title">Lvl 1 • Novice</span>
         <span class="xp-numbers"><strong id="xp-current">0</strong> / <span id="xp-next">300</span> XP</span>
@@ -52,9 +54,9 @@
       </div>
     </section>
 
-    <!-- Main 3-Column Bento Grid -->
+    <!-- Main Bento Grid -->
     <div class="bento-grid">
-      <!-- Column 1: Pomodoro Timer + Weekly Activity -->
+      <!-- Column 1: Timer & Mini Games -->
       <div class="col-stack">
         <section class="card timer-card">
           <div class="mode-tabs">
@@ -80,64 +82,69 @@
           </div>
         </section>
 
-        <!-- 7-Day Focus Activity Heatmap -->
-        <section class="card stats-card">
+        <!-- Focus Break Mini-Game Card -->
+        <section class="card game-card zen-hide">
           <div class="card-top">
-            <h2>Weekly Focus Minutes</h2>
-            <span class="muted-tag" id="today-mins-label">0m today</span>
+            <h2>🎮 Break Mini-Game</h2>
+            <span class="pill-badge">Retro Clicker</span>
           </div>
-          <div class="weekly-chart" id="weekly-chart">
-            <!-- Populated dynamically by JS -->
+          <p class="card-sub">Quick reflex challenge to clear your mind during breaks.</p>
+          <div class="game-container" id="game-container">
+            <div class="game-score">Score: <span id="game-score">0</span></div>
+            <button id="game-start-btn" class="secondary-btn">Play Catch Star</button>
           </div>
         </section>
       </div>
 
-      <!-- Column 2: Daily Top 3 Priorities + Quick Scratchpad -->
+      <!-- Column 2: Priorities & Notepad -->
       <div class="col-stack">
-        <section class="card">
+        <section class="card zen-hide">
           <div class="card-top">
             <h2>Today's Top 3 Priorities</h2>
             <span class="pill-badge" id="priority-badge">0 / 3</span>
           </div>
-          <p class="card-sub">Resets every morning • +25 XP per task completed</p>
+          <p class="card-sub">Resets every morning • +25 XP per task</p>
 
           <ul class="task-list">
-            <li class="task-item">
-              <input type="checkbox" id="check-0" />
-              <input type="text" id="text-0" placeholder="1. Most important target today..." />
-            </li>
-            <li class="task-item">
-              <input type="checkbox" id="check-1" />
-              <input type="text" id="text-1" placeholder="2. Secondary milestone..." />
-            </li>
-            <li class="task-item">
-              <input type="checkbox" id="check-2" />
-              <input type="text" id="text-2" placeholder="3. Key wrap-up task..." />
-            </li>
+            <li class="task-item"><input type="checkbox" id="check-0" /><input type="text" id="text-0" placeholder="1. Primary goal..." /></li>
+            <li class="task-item"><input type="checkbox" id="check-1" /><input type="text" id="text-1" placeholder="2. Secondary task..." /></li>
+            <li class="task-item"><input type="checkbox" id="check-2" /><input type="text" id="text-2" placeholder="3. Final target..." /></li>
           </ul>
         </section>
 
-        <!-- Brain Dump Scratchpad -->
-        <section class="card scratchpad-card">
+        <!-- Personal Notes / Thoughts Notepad -->
+        <section class="card notepad-card zen-hide">
           <div class="card-top">
-            <h2>Brain Dump Scratchpad</h2>
-            <span class="muted-tag" id="save-status">Auto-saved</span>
+            <h2>📝 My Notes & Thoughts</h2>
+            <span class="muted-tag" id="notes-status">Auto-saved</span>
           </div>
-          <p class="card-sub">Park distracting thoughts here so you stay in flow.</p>
-          <textarea id="scratchpad" placeholder="Jot down quick notes, links, or reminders..."></textarea>
+          <p class="card-sub">Write down personal journal entries, ideas, or reminders.</p>
+          <textarea id="personal-notes" placeholder="Write your thoughts here..."></textarea>
         </section>
       </div>
 
-      <!-- Column 3: Multi-Track Ambient Sound Mixer -->
-      <div class="col-stack">
+      <!-- Column 3: Indian 90s Songs Player & Soundscapes -->
+      <div class="col-stack zen-hide">
         <section class="card mixer-card">
           <div class="card-top">
-            <h2>Ambient Sound Mixer</h2>
-            <span class="pill-badge">Layerable</span>
+            <h2>📻 Indian 90s Retro & Ambient</h2>
+            <span class="pill-badge">Nostalgia</span>
           </div>
-          <p class="card-sub">Mix multiple soundscapes together with individual sliders.</p>
+          <p class="card-sub">Play soothing 90s instrumental vibes & ambient sound mixers.</p>
 
-          <div class="mixer-list">
+          <div class="retro-songs-box">
+            <div class="song-info">
+              <span class="now-playing-label">Now Playing:</span>
+              <span id="song-title">Select a 90s Melody</span>
+            </div>
+            <div class="song-btns">
+              <button class="song-btn" data-song="90s-flute">🎶 90s Romantic Flute</button>
+              <button class="song-btn" data-song="lofi-90s">🎸 Retro Lo-Fi Chill</button>
+              <button id="stop-song-btn" class="secondary-btn">Stop Music</button>
+            </div>
+          </div>
+
+          <div class="mixer-list" style="margin-top: 14px;">
             <div class="sound-channel" data-sound="rain">
               <div class="channel-head">
                 <button class="channel-toggle" data-sound="rain">🌧️ Soft Rain</button>
@@ -145,7 +152,6 @@
               </div>
               <input type="range" class="channel-slider" data-sound="rain" min="0" max="1" step="0.05" value="0" />
             </div>
-
             <div class="sound-channel" data-sound="brown">
               <div class="channel-head">
                 <button class="channel-toggle" data-sound="brown">🌊 Deep Brown Noise</button>
@@ -153,29 +159,46 @@
               </div>
               <input type="range" class="channel-slider" data-sound="brown" min="0" max="1" step="0.05" value="0" />
             </div>
-
-            <div class="sound-channel" data-sound="binaural">
-              <div class="channel-head">
-                <button class="channel-toggle" data-sound="binaural">🧠 40Hz Focus Wave</button>
-                <span class="vol-pct">0%</span>
-              </div>
-              <input type="range" class="channel-slider" data-sound="binaural" min="0" max="1" step="0.05" value="0" />
-            </div>
-
-            <div class="sound-channel" data-sound="wind">
-              <div class="channel-head">
-                <button class="channel-toggle" data-sound="wind">🍃 Night Breeze</button>
-                <span class="vol-pct">0%</span>
-              </div>
-              <input type="range" class="channel-slider" data-sound="wind" min="0" max="1" step="0.05" value="0" />
-            </div>
           </div>
-
-          <button id="mute-all-btn" class="secondary-btn full-width">Stop All Sounds</button>
         </section>
       </div>
     </div>
   </main>
+
+  <!-- Friends & Chat Drawer Modal -->
+  <div class="friends-modal" id="friends-modal">
+    <div class="friends-modal-content">
+      <div class="card-top">
+        <h2>👥 Friends & Direct Messages</h2>
+        <button id="close-friends-btn" class="secondary-btn" style="padding: 4px 10px; flex: unset;">✕</button>
+      </div>
+      <p class="card-sub">Chat with study buddies online.</p>
+      
+      <div class="friends-layout">
+        <div class="friends-list">
+          <div class="friend-item active" data-friend="Aarav">
+            <span class="status-dot online"></span> Aarav (Focusing: 25m)
+          </div>
+          <div class="friend-item" data-friend="Priya">
+            <span class="status-dot online"></span> Priya (Taking Break)
+          </div>
+          <div class="friend-item" data-friend="Kabir">
+            <span class="status-dot offline"></span> Kabir (Offline)
+          </div>
+        </div>
+
+        <div class="chat-pane">
+          <div class="chat-messages" id="chat-messages">
+            <div class="chat-msg received"><strong>Aarav:</strong> Keep up the great work today! 🔥</div>
+          </div>
+          <div class="chat-input-row">
+            <input type="text" id="chat-input" placeholder="Type a message..." />
+            <button id="send-chat-btn" class="primary-btn">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
