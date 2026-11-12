@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FocusSpace — Daily Pomodoro & Priorities</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient glowing background orbs -->
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+
+  <main class="dashboard">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <h1>FocusSpace</h1>
+      </div>
+      <p id="date-display"></p>
+    </header>
+
+    <div class="grid-container">
+      <!-- Left Column: Circular Timer Card -->
+      <section class="card timer-card">
+        <div class="mode-buttons">
+          <button class="mode-btn active" data-mode="focus" data-time="25">Focus</button>
+          <button class="mode-btn" data-mode="short" data-time="5">Short Break</button>
+          <button class="mode-btn" data-mode="long" data-time="15">Long Break</button>
+        </div>
+
+        <div class="timer-container">
+          <!-- SVG Circular Progress Ring -->
+          <svg class="progress-ring" width="260" height="260">
+            <circle class="progress-ring-bg" cx="130" cy="130" r="115" />
+            <circle class="progress-ring-fill" id="progress-bar" cx="130" cy="130" r="115" />
+          </svg>
+          <div class="timer-content">
+            <div class="timer-display" id="timer">25:00</div>
+            <span class="timer-status" id="timer-status">Ready to focus</span>
+          </div>
+        </div>
+
+        <div class="timer-controls">
+          <button id="start-btn" class="primary-btn">Start Session</button>
+          <button id="reset-btn" class="secondary-btn">Reset</button>
+        </div>
+      </section>
+
+      <!-- Right Column: Priorities & Ambient Sound -->
+      <div class="right-column">
+        <!-- Top 3 Priorities Card -->
+        <section class="card">
+          <div class="card-header">
+            <h2>Today's Top 3 Priorities</h2>
+            <span class="badge">Auto-resets daily</span>
+          </div>
+          <p class="subtitle">Win the day by locking in your top 3 targets.</p>
+          
+          <ul class="task-list">
+            <li class="task-item">
+              <input type="checkbox" id="check-0" />
+              <input type="text" id="text-0" placeholder="Primary goal for today..." />
+            </li>
+            <li class="task-item">
+              <input type="checkbox" id="check-1" />
+              <input type="text" id="text-1" placeholder="Secondary goal..." />
+            </li>
+            <li class="task-item">
+              <input type="checkbox" id="check-2" />
+              <input type="text" id="text-2" placeholder="Third crucial task..." />
+            </li>
+          </ul>
+        </section>
+
+        <!-- Ambient Soundscapes Card -->
+        <section class="card">
+          <h2>Ambient Soundscapes</h2>
+          <p class="subtitle">Built-in audio generator for deep immersion</p>
+          
+          <div class="sound-controls">
+            <button class="sound-btn" id="rain-btn">🌧️ Soft Rain</button>
+            <button class="sound-btn" id="brown-btn">🌊 Deep Brown Noise</button>
+          </div>
+          <div class="volume-row">
+            <span>Volume</span>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.3" />
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
