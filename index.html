@@ -3,114 +3,175 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FocusSpace — Daily Pomodoro & Priorities</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>FocusSpace 2.0 — Daily Flow Workspace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
-<body data-theme="midnight">
-  <!-- Confetti Canvas -->
+<body data-scene="cosmos">
+  <!-- Live Animated Background Canvas & Confetti -->
+  <canvas id="bg-canvas"></canvas>
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- Ambient glowing background orbs -->
-  <div class="ambient-orb orb-1"></div>
-  <div class="ambient-orb orb-2"></div>
-
   <main class="dashboard">
-    <!-- Header -->
+    <!-- Top Navigation & Gamified Profile Bar -->
     <header class="header">
-      <div class="logo">
-        <span class="logo-icon">⚡</span>
-        <h1>FocusSpace</h1>
+      <div class="brand-group">
+        <div class="logo">
+          <span class="logo-icon">⚡</span>
+          <div>
+            <h1>FocusSpace</h1>
+            <p class="daily-quote" id="daily-quote"></p>
+          </div>
+        </div>
       </div>
 
-      <div class="header-right">
-        <!-- Theme Switcher -->
-        <div class="theme-switcher" title="Switch Atmosphere">
-          <button class="theme-dot active" data-theme="midnight" style="background: #6366f1;" title="Midnight Indigo"></button>
-          <button class="theme-dot" data-theme="forest" style="background: #10b981;" title="Deep Forest"></button>
-          <button class="theme-dot" data-theme="sunset" style="background: #f43f5e;" title="Warm Sunset"></button>
-          <button class="theme-dot" data-theme="cyber" style="background: #06b6d4;" title="Cyber Cyan"></button>
+      <div class="header-controls">
+        <!-- Animated Scene Switcher -->
+        <div class="scene-picker" title="Switch Live Atmosphere">
+          <button class="scene-btn active" data-scene="cosmos">✨ Cosmos</button>
+          <button class="scene-btn" data-scene="rain">🌧️ Rain</button>
+          <button class="scene-btn" data-scene="aurora">🌌 Aurora</button>
+          <button class="scene-btn" data-scene="zen">🧘 Zen</button>
         </div>
 
-        <div class="streak-badge" title="Complete at least 1 focus session daily to keep your streak!">
-          🔥 <span id="streak-count">0</span> Day Streak
+        <!-- Streak Pill -->
+        <div class="streak-pill" title="Complete 1 focus session daily to keep your streak!">
+          🔥 <span id="streak-count">0</span>d Streak
         </div>
-
-        <p id="date-display"></p>
       </div>
     </header>
 
-    <div class="grid-container">
-      <!-- Left Column: Circular Timer Card -->
-      <section class="card timer-card">
-        <div class="mode-buttons">
-          <button class="mode-btn active" data-mode="focus" data-time="25">Focus (25m)</button>
-          <button class="mode-btn" data-mode="short" data-time="5">Short Break</button>
-          <button class="mode-btn" data-mode="long" data-time="15">Long Break</button>
-        </div>
+    <!-- RPG XP & Level Progress Bar -->
+    <section class="xp-bar-card">
+      <div class="xp-info">
+        <span class="rank-badge" id="rank-title">Lvl 1 • Novice</span>
+        <span class="xp-numbers"><strong id="xp-current">0</strong> / <span id="xp-next">300</span> XP</span>
+      </div>
+      <div class="xp-track">
+        <div class="xp-fill" id="xp-fill" style="width: 0%;"></div>
+      </div>
+    </section>
 
-        <div class="timer-container">
-          <svg class="progress-ring" width="260" height="260">
-            <circle class="progress-ring-bg" cx="130" cy="130" r="115" />
-            <circle class="progress-ring-fill" id="progress-bar" cx="130" cy="130" r="115" />
-          </svg>
-          <div class="timer-content">
-            <div class="timer-display" id="timer">25:00</div>
-            <span class="timer-status" id="timer-status">Ready to focus</span>
+    <!-- Main 3-Column Bento Grid -->
+    <div class="bento-grid">
+      <!-- Column 1: Pomodoro Timer + Weekly Activity -->
+      <div class="col-stack">
+        <section class="card timer-card">
+          <div class="mode-tabs">
+            <button class="mode-btn active" data-mode="focus" data-time="25">Focus (25m)</button>
+            <button class="mode-btn" data-mode="short" data-time="5">Short (5m)</button>
+            <button class="mode-btn" data-mode="long" data-time="15">Long (15m)</button>
           </div>
-        </div>
 
-        <div class="session-counter">
-          Completed today: <strong id="sessions-today">0</strong> sessions
-        </div>
+          <div class="timer-ring-wrap">
+            <svg class="progress-ring" width="230" height="230">
+              <circle class="progress-ring-bg" cx="115" cy="115" r="102" />
+              <circle class="progress-ring-fill" id="progress-bar" cx="115" cy="115" r="102" />
+            </svg>
+            <div class="timer-center">
+              <div class="timer-display" id="timer">25:00</div>
+              <span class="timer-status" id="timer-status">Ready for deep work</span>
+            </div>
+          </div>
 
-        <div class="timer-controls">
-          <button id="start-btn" class="primary-btn">Start Session</button>
-          <button id="reset-btn" class="secondary-btn">Reset</button>
-        </div>
-      </section>
+          <div class="timer-actions">
+            <button id="start-btn" class="primary-btn">Start Focus</button>
+            <button id="reset-btn" class="secondary-btn">Reset</button>
+          </div>
+        </section>
 
-      <!-- Right Column: Priorities & Ambient Sound -->
-      <div class="right-column">
-        <!-- Top 3 Priorities Card -->
+        <!-- 7-Day Focus Activity Heatmap -->
+        <section class="card stats-card">
+          <div class="card-top">
+            <h2>Weekly Focus Minutes</h2>
+            <span class="muted-tag" id="today-mins-label">0m today</span>
+          </div>
+          <div class="weekly-chart" id="weekly-chart">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </section>
+      </div>
+
+      <!-- Column 2: Daily Top 3 Priorities + Quick Scratchpad -->
+      <div class="col-stack">
         <section class="card">
-          <div class="card-header">
+          <div class="card-top">
             <h2>Today's Top 3 Priorities</h2>
-            <span class="badge" id="priority-badge">0 / 3 Done</span>
+            <span class="pill-badge" id="priority-badge">0 / 3</span>
           </div>
-          <p class="subtitle">Complete all 3 targets to celebrate your daily win.</p>
-          
+          <p class="card-sub">Resets every morning • +25 XP per task completed</p>
+
           <ul class="task-list">
             <li class="task-item">
               <input type="checkbox" id="check-0" />
-              <input type="text" id="text-0" placeholder="Primary goal for today..." />
+              <input type="text" id="text-0" placeholder="1. Most important target today..." />
             </li>
             <li class="task-item">
               <input type="checkbox" id="check-1" />
-              <input type="text" id="text-1" placeholder="Secondary goal..." />
+              <input type="text" id="text-1" placeholder="2. Secondary milestone..." />
             </li>
             <li class="task-item">
               <input type="checkbox" id="check-2" />
-              <input type="text" id="text-2" placeholder="Third crucial task..." />
+              <input type="text" id="text-2" placeholder="3. Key wrap-up task..." />
             </li>
           </ul>
         </section>
 
-        <!-- Ambient Soundscapes Card -->
-        <section class="card">
-          <h2>Ambient Soundscapes</h2>
-          <p class="subtitle">Procedural browser audio — zero lag, works offline</p>
-          
-          <div class="sound-controls">
-            <button class="sound-btn" data-sound="rain">🌧️ Soft Rain</button>
-            <button class="sound-btn" data-sound="brown">🌊 Deep Brown</button>
-            <button class="sound-btn" data-sound="cafe">☕ Warm Hum</button>
-            <button class="sound-btn" data-sound="wind">🍃 Night Breeze</button>
+        <!-- Brain Dump Scratchpad -->
+        <section class="card scratchpad-card">
+          <div class="card-top">
+            <h2>Brain Dump Scratchpad</h2>
+            <span class="muted-tag" id="save-status">Auto-saved</span>
           </div>
-          <div class="volume-row">
-            <span>Volume</span>
-            <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.3" />
+          <p class="card-sub">Park distracting thoughts here so you stay in flow.</p>
+          <textarea id="scratchpad" placeholder="Jot down quick notes, links, or reminders..."></textarea>
+        </section>
+      </div>
+
+      <!-- Column 3: Multi-Track Ambient Sound Mixer -->
+      <div class="col-stack">
+        <section class="card mixer-card">
+          <div class="card-top">
+            <h2>Ambient Sound Mixer</h2>
+            <span class="pill-badge">Layerable</span>
           </div>
+          <p class="card-sub">Mix multiple soundscapes together with individual sliders.</p>
+
+          <div class="mixer-list">
+            <div class="sound-channel" data-sound="rain">
+              <div class="channel-head">
+                <button class="channel-toggle" data-sound="rain">🌧️ Soft Rain</button>
+                <span class="vol-pct">0%</span>
+              </div>
+              <input type="range" class="channel-slider" data-sound="rain" min="0" max="1" step="0.05" value="0" />
+            </div>
+
+            <div class="sound-channel" data-sound="brown">
+              <div class="channel-head">
+                <button class="channel-toggle" data-sound="brown">🌊 Deep Brown Noise</button>
+                <span class="vol-pct">0%</span>
+              </div>
+              <input type="range" class="channel-slider" data-sound="brown" min="0" max="1" step="0.05" value="0" />
+            </div>
+
+            <div class="sound-channel" data-sound="binaural">
+              <div class="channel-head">
+                <button class="channel-toggle" data-sound="binaural">🧠 40Hz Focus Wave</button>
+                <span class="vol-pct">0%</span>
+              </div>
+              <input type="range" class="channel-slider" data-sound="binaural" min="0" max="1" step="0.05" value="0" />
+            </div>
+
+            <div class="sound-channel" data-sound="wind">
+              <div class="channel-head">
+                <button class="channel-toggle" data-sound="wind">🍃 Night Breeze</button>
+                <span class="vol-pct">0%</span>
+              </div>
+              <input type="range" class="channel-slider" data-sound="wind" min="0" max="1" step="0.05" value="0" />
+            </div>
+          </div>
+
+          <button id="mute-all-btn" class="secondary-btn full-width">Stop All Sounds</button>
         </section>
       </div>
     </div>
