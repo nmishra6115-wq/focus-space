@@ -55,10 +55,7 @@ function renderBackground() {
     bgCtx.lineWidth = 1.2;
     particles.forEach(p => {
       p.y += p.speedY;
-      if (p.y > bgCanvas.height) {
-        p.y = -20;
-        p.x = Math.random() * bgCanvas.width;
-      }
+      if (p.y > bgCanvas.height) { p.y = -20; p.x = Math.random() * bgCanvas.width; }
       bgCtx.beginPath();
       bgCtx.moveTo(p.x, p.y);
       bgCtx.lineTo(p.x - 1, p.y + p.len);
@@ -182,9 +179,7 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
 // 5. Daily Top 3 Priorities & Personal Notepad
 const todayKey = new Date().toLocaleDateString('en-CA');
 const savedTasks = JSON.parse(localStorage.getItem(`focusSpace_tasks_${todayKey}`)) || [
-  { text: '', done: false },
-  { text: '', done: false },
-  { text: '', done: false }
+  { text: '', done: false }, { text: '', done: false }, { text: '', done: false }
 ];
 
 function saveTasks() {
@@ -224,11 +219,10 @@ notepad.addEventListener('input', () => {
   setTimeout(() => { document.getElementById('notes-status').textContent = 'Auto-saved'; }, 600);
 });
 
-// 6. Radio Stream Switcher (Zero Storage, Fixed via nocookie & referrerpolicy)
+// 6. Radio Stream Switcher
 function switchRadio(videoId, btnEl) {
   const iframe = document.getElementById('yt-player');
   iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
-
   if (btnEl) {
     document.querySelectorAll('.vibe-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');
@@ -238,9 +232,10 @@ function switchRadio(videoId, btnEl) {
 // 7. Friends & Chat Modal
 const modal = document.getElementById('friends-modal');
 document.getElementById('toggle-friends-btn').addEventListener('click', () => modal.classList.add('open'));
+document.getElementById('close-friends-btn').addEventListener('click', () => modal.classList.remove('open'));
+
 const chatMsgs = document.getElementById('chat-messages');
 const chatInput = document.getElementById('chat-input');
-
 function sendChatMessage() {
   if (!chatInput.value.trim()) return;
   const div = document.createElement('div');
@@ -250,20 +245,17 @@ function sendChatMessage() {
   chatInput.value = '';
   chatMsgs.scrollTop = chatMsgs.scrollHeight;
 }
-
 document.getElementById('send-chat-btn').addEventListener('click', sendChatMessage);
-chatInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') sendChatMessage();
-});
+chatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') sendChatMessage(); });
 
-// 8. Mini-Game (Catch Star Clicker)
+// 8. Mini-Game
 let gameScore = 0;
 const gameBtn = document.getElementById('game-start-btn');
 gameBtn.addEventListener('click', () => {
   gameScore++;
   document.getElementById('game-score').textContent = gameScore;
   gameBtn.textContent = `⭐ Clicked! (${gameScore})`;
-  setTimeout(() => { gameBtn.textContent = 'Click Fast!'; }, 400);
+  setTimeout(() => { gameBtn.textContent = 'Play Catch Star'; }, 400);
 });
 
 updateTimerUI();
