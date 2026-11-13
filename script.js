@@ -219,10 +219,16 @@ notepad.addEventListener('input', () => {
   setTimeout(() => { document.getElementById('notes-status').textContent = 'Auto-saved'; }, 600);
 });
 
-// 6. Bollywood SoundCloud Stream Switcher
-function switchSoundCloud(searchQuery, btnEl) {
-  const iframe = document.getElementById('sc-player');
-  iframe.src = `https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/search/sounds%3Fq%3D${searchQuery}&color=%236366f1&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
+// 6. Native Audio Stream Switcher
+function switchAudio(streamUrl, labelText, btnEl) {
+  const audioEl = document.getElementById('audio-stream');
+  const sourceEl = document.getElementById('audio-source');
+  const labelEl = document.getElementById('now-playing-label');
+
+  sourceEl.src = streamUrl;
+  labelEl.textContent = labelText;
+  audioEl.load();
+  audioEl.play().catch(e => console.log("Playback prevented:", e));
 
   if (btnEl) {
     document.querySelectorAll('.vibe-btn').forEach(b => b.classList.remove('active'));

@@ -118,30 +118,26 @@
         </section>
       </div>
 
-      <!-- Column 3: Bollywood Soft & Lofi Player (SoundCloud Embed) -->
+      <!-- Column 3: Native Audio Stream Player (Guaranteed Workability) -->
       <div class="col-stack zen-hide">
         <section class="card mixer-card">
           <div class="card-top">
-            <h2>🎵 Bollywood Lofi & Acoustic</h2>
-            <span class="pill-badge">Free Stream</span>
+            <h2>🎵 Relaxing Ambiance Stream</h2>
+            <span class="pill-badge">Live Audio</span>
           </div>
-          <p class="card-sub">Relaxing Hindi melodies for deep focus.</p>
+          <p class="card-sub">Smooth, non-intrusive soundscapes for deep focus.</p>
 
-          <div class="retro-songs-box" style="padding: 6px 0; text-align: center;">
-            <iframe 
-              id="sc-player"
-              width="100%" 
-              height="180" 
-              scrolling="no" 
-              frameborder="no" 
-              allow="autoplay" 
-              style="border-radius: 12px;"
-              src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/search/sounds%3Fq%3Dbollywood%2520lofi&color=%236366f1&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true">
-            </iframe>
+          <div class="audio-player-box" style="padding: 20px 0; text-align: center; display: flex; flex-direction: column; gap: 16px;">
+            <div id="now-playing-label" style="font-weight: 700; font-size: 14px; color: var(--accent);">☕ Lo-Fi Chill Stream</div>
+            
+            <audio id="audio-stream" controls loop style="width: 100%; border-radius: 8px;">
+              <source id="audio-source" src="https://stream.zeno.fm/f3wvbbqmdg8uv" type="audio/mp4">
+              Your browser does not support the audio element.
+            </audio>
 
-            <div class="song-btns" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
-              <button class="song-btn vibe-btn active" onclick="switchSoundCloud('bollywood%20lofi', this)">🎧 Bollywood Lofi</button>
-              <button class="song-btn vibe-btn" onclick="switchSoundCloud('hindi%20acoustic%20chill', this)">🌙 Hindi Acoustic</button>
+            <div class="song-btns" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+              <button class="song-btn vibe-btn active" onclick="switchAudio('https://stream.zeno.fm/f3wvbbqmdg8uv', '☕ Lo-Fi Chill Stream', this)">☕ Lo-Fi Beats</button>
+              <button class="song-btn vibe-btn" onclick="switchAudio('https://icecast.bcast.group/chillhop.mp3', '🌙 Chillhop Wave', this)">🌙 Chillhop Waves</button>
             </div>
           </div>
         </section>
