@@ -219,10 +219,11 @@ notepad.addEventListener('input', () => {
   setTimeout(() => { document.getElementById('notes-status').textContent = 'Auto-saved'; }, 600);
 });
 
-// 6. Radio Stream Switcher
-function switchRadio(videoId, btnEl) {
-  const iframe = document.getElementById('yt-player');
-  iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+// 6. Bollywood SoundCloud Stream Switcher
+function switchSoundCloud(searchQuery, btnEl) {
+  const iframe = document.getElementById('sc-player');
+  iframe.src = `https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/search/sounds%3Fq%3D${searchQuery}&color=%236366f1&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
+
   if (btnEl) {
     document.querySelectorAll('.vibe-btn').forEach(b => b.classList.remove('active'));
     btnEl.classList.add('active');

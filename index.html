@@ -118,31 +118,30 @@
         </section>
       </div>
 
-      <!-- Column 3: Relaxing Ambient Audio Player (Fixed non-blank iframe) -->
+      <!-- Column 3: Bollywood Soft & Lofi Player (SoundCloud Embed) -->
       <div class="col-stack zen-hide">
         <section class="card mixer-card">
           <div class="card-top">
-            <h2>🎵 Relaxing Focus Ambiance</h2>
-            <span class="pill-badge">Cloud Stream</span>
+            <h2>🎵 Bollywood Lofi & Acoustic</h2>
+            <span class="pill-badge">Free Stream</span>
           </div>
-          <p class="card-sub">Soothing ambient soundscapes for deep focus.</p>
+          <p class="card-sub">Relaxing Hindi melodies for deep focus.</p>
 
-          <div class="retro-songs-box" style="padding: 10px; text-align: center;">
-            <div id="player-container" style="position: relative; width: 100%; height: 180px; border-radius: 12px; overflow: hidden; background: #000;">
-              <iframe 
-                id="yt-player"
-                style="width: 100%; height: 100%; border: none;"
-                src="https://www.youtube-nocookie.com/embed/5qap5aO4i9A?enablejsapi=1" 
-                title="Relaxing Focus Ambiance"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-              </iframe>
-            </div>
+          <div class="retro-songs-box" style="padding: 6px 0; text-align: center;">
+            <iframe 
+              id="sc-player"
+              width="100%" 
+              height="180" 
+              scrolling="no" 
+              frameborder="no" 
+              allow="autoplay" 
+              style="border-radius: 12px;"
+              src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/search/sounds%3Fq%3Dbollywood%2520lofi&color=%236366f1&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true">
+            </iframe>
 
             <div class="song-btns" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px;">
-              <button class="song-btn vibe-btn active" onclick="switchRadio('5qap5aO4i9A', this)">☕ Lofi Hip Hop</button>
-              <button class="song-btn vibe-btn" onclick="switchRadio('DWcJFNfaw9c', this)">🌙 Coffee Shop</button>
+              <button class="song-btn vibe-btn active" onclick="switchSoundCloud('bollywood%20lofi', this)">🎧 Bollywood Lofi</button>
+              <button class="song-btn vibe-btn" onclick="switchSoundCloud('hindi%20acoustic%20chill', this)">🌙 Hindi Acoustic</button>
             </div>
           </div>
         </section>
